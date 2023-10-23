@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.14)
+project(DataStream CXX)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+set(DATASTREAM_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+
+set(SOURCES
+	${SOURCES}
+	src/binary-io/data-stream.cpp
+	)
+
+set(HEADERS
+	${HEADERS}
+	include/binary-io/data-stream.h
+	)
+
+add_library(DataStream STATIC ${SOURCES} ${HEADERS})
+find_package(Qt6 COMPONENTS Core REQUIRED)
+target_include_directories(DataStream PUBLIC ${DATASTREAM_ROOT}/include)
+target_link_libraries(DataStream PRIVATE Qt6::Core)
+set(POSITION_INDEPENDENT_CODE ON)
+
+# VS stuff
+set_property(DIRECTORY ${ROOT} PROPERTY VS_STARTUP_PROJECT DataStream)
+source_group(TREE ${DATASTREAM_ROOT} FILES ${SOURCES} ${HEADERS})
