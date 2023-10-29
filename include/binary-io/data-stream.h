@@ -15,6 +15,7 @@ public:
 		NX
 	};
 
+	DataStream(QIODevice* device, Platform platform = Platform::PC);
 	DataStream(Platform platform = Platform::PC);
 
 	// Get the stream's current platform
@@ -30,10 +31,10 @@ public:
 	void setIs64Bit(bool setting);
 
 	// Reads a pointer from this stream into an integer variable
-	void readPtr(quint64& ptr);
+	void readPtr(qint64& ptr);
 
 	// Writes an integer value to a pointer variable
-	void writePtr(quint64 ptr);
+	void writePtr(qint64 ptr);
 
 	// Reads a size_t field from this stream into an integer variable
 	void readSize(size_t& size);

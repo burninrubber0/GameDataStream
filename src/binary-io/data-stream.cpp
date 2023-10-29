@@ -1,5 +1,18 @@
 #include <binary-io/data-stream.h>
 
+DataStream::DataStream(QIODevice* device, Platform platform)
+	: platform(platform)
+{
+	// Set the device
+	setDevice(device);
+	
+	// Set platform-specific details
+	setPlatform(platform);
+
+	// Set single precision FP (default is double)
+	setFloatingPointPrecision(QDataStream::SinglePrecision);
+}
+
 DataStream::DataStream(Platform platform)
 	: platform(platform)
 {
@@ -37,19 +50,19 @@ void DataStream::setIs64Bit(bool setting)
 }
 
 // Reads a pointer from this stream into an integer variable
-void DataStream::readPtr(quint64& ptr)
+void DataStream::readPtr(qint64& ptr)
 {
 	if (!is64Bit)
-		*this >> (quint32&)ptr;
+		*this >> (qint32&)ptr;
 	else
 		*this >> ptr;
 }
 
 // Writes an integer value to a pointer variable
-void DataStream::writePtr(quint64 ptr)
+void DataStream::writePtr(qint64 ptr)
 {
 	if (!is64Bit)
-		*this << (quint32)ptr;
+		*this << (qint32)ptr;
 	else
 		*this << ptr;
 }
@@ -57,13 +70,19 @@ void DataStream::writePtr(quint64 ptr)
 // Reads a size_t field from this stream into an integer variable
 void DataStream::readSize(size_t& size)
 {
-	readPtr(size);
+	if (!is64Bit)
+		*this >> (quint32&)size;
+	else
+		*this >> size;
 }
 
 // Writes an integer value to a size_t variable
 void DataStream::writeSize(size_t size)
 {
-	writePtr(size);
+	if (!is64Bit)
+		*this << (quint32)size;
+	else
+		*this << size;
 }
 
 // Reads an unspecified number of bytes from this stream into a string
