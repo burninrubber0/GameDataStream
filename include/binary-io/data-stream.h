@@ -8,11 +8,13 @@ class DataStream : public QDataStream
 public:
 	enum class Platform
 	{
-		PS3,
-		X360,
 		PC,
-		PS4,
-		NX
+		X360, // Microsoft Xbox 360
+		PS3,  // Sony PlayStation 3
+		PSV,  // Sony PlayStation Vita
+		WIIU, // Nintendo Wii U
+		PS4,  // Sony PlayStation 4
+		NX    // Nintendo Switch
 	};
 
 	DataStream(QIODevice* device, Platform platform = Platform::PC);
