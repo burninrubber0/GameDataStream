@@ -163,8 +163,10 @@ void DataStream::setDefaultEndianness()
 {
 	switch (platform)
 	{
+	case Platform::GC:
 	case Platform::X360:
 	case Platform::PS3:
+	case Platform::WII:
 	case Platform::WIIU:
 		setByteOrder(QDataStream::BigEndian);
 		break;

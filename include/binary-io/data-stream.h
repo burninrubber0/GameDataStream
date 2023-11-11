@@ -9,12 +9,16 @@ public:
 	enum class Platform
 	{
 		PC,
-		X360, // Microsoft Xbox 360
-		PS3,  // Sony PlayStation 3
-		PSV,  // Sony PlayStation Vita
-		WIIU, // Nintendo Wii U
-		PS4,  // Sony PlayStation 4
-		NX    // Nintendo Switch
+		PS2,  // Sony PlayStation 2 (2000)
+		GC,   // Nintendo GameCube (2001)
+		XBOX, // Microsoft Xbox (2001)
+		X360, // Microsoft Xbox 360 (2005)
+		PS3,  // Sony PlayStation 3 (2006)
+		WII,  // Nintendo Wii (2006)
+		PSV,  // Sony PlayStation Vita (2011)
+		WIIU, // Nintendo Wii U (2012)
+		PS4,  // Sony PlayStation 4 (2013)
+		NX    // Nintendo Switch (2017)
 	};
 
 	DataStream(QIODevice* device, Platform platform = Platform::PC);
