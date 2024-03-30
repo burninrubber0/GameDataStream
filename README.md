@@ -1,4 +1,4 @@
-# DataStream
+# GameDataStream
 A subclass of [QDataStream](https://doc.qt.io/qt-6/qdatastream.html) intended to make handling video game assets easier.
 
 Changes include the following:

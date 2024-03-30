@@ -3,7 +3,7 @@
 #include <QDataStream>
 #include <QFile> // For seeks and device flags
 
-class DataStream : public QDataStream
+class GameDataStream : public QDataStream
 {
 public:
 	enum class Platform
@@ -21,8 +21,10 @@ public:
 		NX    // Nintendo Switch (2017)
 	};
 
-	DataStream(QIODevice* device, Platform platform = Platform::PC);
-	DataStream(Platform platform = Platform::PC);
+	GameDataStream(QIODevice* device, Platform platform = Platform::PC,
+		FloatingPointPrecision precision = FloatingPointPrecision::SinglePrecision);
+	GameDataStream(Platform platform = Platform::PC,
+		FloatingPointPrecision precision = FloatingPointPrecision::SinglePrecision);
 
 	// Get the stream's current platform
 	Platform getPlatform();
@@ -61,7 +63,7 @@ public:
 	// Reads a specified number of bytes from this stream to another stream, writing to a specified
 	// offset in the other stream. By default, this offset is the current offset of this stream.
 	// This is most useful for storing unknown data and padding to prevent data loss
-	void readRawData(DataStream& stream, quint32 length, qint64 position = -1);
+	void readRawData(GameDataStream& stream, quint32 length, qint64 position = -1);
 
 	// Get the current offset the device is reading/writing from
 	qint64 pos();

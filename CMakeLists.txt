@@ -1,26 +1,26 @@
 cmake_minimum_required(VERSION 3.14)
-project(DataStream CXX)
+project(GameDataStream CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(DATASTREAM_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
+set(GAMEDATASTREAM_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
-set(DATASTREAM_SOURCES
-	${DATASTREAM_SOURCES}
-	src/binary-io/data-stream.cpp
+set(GAMEDATASTREAM_SOURCES
+	${GAMEDATASTREAM_SOURCES}
+	src/gamedata-stream.cpp
 	)
 
-set(DATASTREAM_HEADERS
-	${DATASTREAM_HEADERS}
-	include/binary-io/data-stream.h
+set(GAMEDATASTREAM_HEADERS
+	${GAMEDATASTREAM_HEADERS}
+	include/gamedata-stream.h
 	)
 
-add_library(DataStream STATIC ${DATASTREAM_SOURCES} ${DATASTREAM_HEADERS})
+add_library(GameDataStream STATIC ${GAMEDATASTREAM_SOURCES} ${GAMEDATASTREAM_HEADERS})
 find_package(Qt6 COMPONENTS Core REQUIRED)
-target_include_directories(DataStream PUBLIC ${DATASTREAM_ROOT}/include)
-target_link_libraries(DataStream PRIVATE Qt6::Core)
-set_property(TARGET DataStream PROPERTY POSITION_INDEPENDENT_CODE ON)
+target_include_directories(GameDataStream PUBLIC ${GAMEDATASTREAM_ROOT}/include)
+target_link_libraries(GameDataStream PRIVATE Qt6::Core)
+set_property(TARGET GameDataStream PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # VS stuff
-set_property(DIRECTORY ${DATASTREAM_ROOT} PROPERTY VS_STARTUP_PROJECT DataStream)
-source_group(TREE ${DATASTREAM_ROOT} FILES ${DATASTREAM_SOURCES} ${DATASTREAM_HEADERS})
+set_property(DIRECTORY ${GAMEDATASTREAM_ROOT} PROPERTY VS_STARTUP_PROJECT GameDataStream)
+source_group(TREE ${GAMEDATASTREAM_ROOT} FILES ${GAMEDATASTREAM_SOURCES} ${GAMEDATASTREAM_HEADERS})
