@@ -140,6 +140,11 @@ void GameDataStream::readRawData(GameDataStream& stream, quint32 length, qint64 
 	stream.device()->write(device()->read(length));
 }
 
+qint64 GameDataStream::readRawData(char* s, qint64 len)
+{
+	return QDataStream::readRawData(s, len);
+}
+
 // Get the current offset the device is reading/writing from
 qint64 GameDataStream::pos()
 {

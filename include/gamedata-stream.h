@@ -69,6 +69,8 @@ public:
 	// This is most useful for storing unknown data and padding to prevent data loss
 	void readRawData(GameDataStream& stream, quint32 length, qint64 position = -1);
 
+	qint64 readRawData(char* s, qint64 len);
+
 	// Get the current offset the device is reading/writing from
 	qint64 pos();
 
