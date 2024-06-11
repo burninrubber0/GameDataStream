@@ -21,19 +21,23 @@ public:
 		NX    // Nintendo Switch (2017)
 	};
 
+	GameDataStream(Platform platform = Platform::PC,
+		FloatingPointPrecision precision = FloatingPointPrecision::SinglePrecision);
 	GameDataStream(QIODevice* device, Platform platform = Platform::PC,
 		FloatingPointPrecision precision = FloatingPointPrecision::SinglePrecision);
-	GameDataStream(Platform platform = Platform::PC,
+	GameDataStream(QByteArray* a, QIODeviceBase::OpenMode mode, Platform platform = Platform::PC,
+		FloatingPointPrecision precision = FloatingPointPrecision::SinglePrecision);
+	GameDataStream(const QByteArray& a, Platform platform = Platform::PC,
 		FloatingPointPrecision precision = FloatingPointPrecision::SinglePrecision);
 
 	// Get the stream's current platform
-	Platform getPlatform();
+	Platform platform();
 
 	// Set the stream's currrent platform and update details
 	void setPlatform(Platform platform);
 
 	// Get whether the stream reads and writes pointers as 32 or 64 bit
-	bool getIs64Bit();
+	bool is64Bit();
 
 	// Set whether the stream reads and writes pointers as 32 or 64 bit
 	void setIs64Bit(bool setting);
@@ -83,8 +87,8 @@ public:
 	void close();
 
 private:
-	Platform platform;
-	bool is64Bit = false;
+	Platform mPlatform;
+	bool mIs64Bit = false;
 
 	// Set endianness based on platform (default is big endian)
 	void setDefaultEndianness();

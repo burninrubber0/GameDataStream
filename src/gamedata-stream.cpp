@@ -1,11 +1,8 @@
 #include <gamedata-stream.h>
 
-GameDataStream::GameDataStream(QIODevice* device, Platform platform, FloatingPointPrecision precision)
-	: platform(platform)
+GameDataStream::GameDataStream(Platform platform, FloatingPointPrecision precision)
+	: QDataStream(), mPlatform(platform)
 {
-	// Set the device
-	setDevice(device);
-	
 	// Set platform-specific details
 	setPlatform(platform);
 
@@ -13,8 +10,28 @@ GameDataStream::GameDataStream(QIODevice* device, Platform platform, FloatingPoi
 	setFloatingPointPrecision(precision);
 }
 
-GameDataStream::GameDataStream(Platform platform, FloatingPointPrecision precision)
-	: platform(platform)
+GameDataStream::GameDataStream(QIODevice* device, Platform platform, FloatingPointPrecision precision)
+	: QDataStream(device), mPlatform(platform)
+{
+	// Set platform-specific details
+	setPlatform(platform);
+
+	// Set floating point precision
+	setFloatingPointPrecision(precision);
+}
+
+GameDataStream::GameDataStream(QByteArray* a, QIODeviceBase::OpenMode mode, Platform platform, FloatingPointPrecision precision)
+	: QDataStream(a, mode), mPlatform(platform)
+{
+	// Set platform-specific details
+	setPlatform(platform);
+
+	// Set floating point precision
+	setFloatingPointPrecision(precision);
+}
+
+GameDataStream::GameDataStream(const QByteArray& a, Platform platform, FloatingPointPrecision precision)
+	: QDataStream(a), mPlatform(platform)
 {
 	// Set platform-specific details
 	setPlatform(platform);
@@ -24,35 +41,35 @@ GameDataStream::GameDataStream(Platform platform, FloatingPointPrecision precisi
 }
 
 // Get the stream's current platform
-GameDataStream::Platform GameDataStream::getPlatform()
+GameDataStream::Platform GameDataStream::platform()
 {
-	return platform;
+	return mPlatform;
 }
 
 // Set the stream's current platform and update details
 void GameDataStream::setPlatform(Platform platform)
 {
-	this->platform = platform;
+	this->mPlatform = platform;
 	setDefaultEndianness();
 	setDefaultIs64Bit();
 }
 
 // Get whether the stream reads and writes pointers as 32 or 64 bit
-bool GameDataStream::getIs64Bit()
+bool GameDataStream::is64Bit()
 {
-	return is64Bit;
+	return mIs64Bit;
 }
 
 // Set whether the stream reads and writes pointers as 32 or 64 bit
 void GameDataStream::setIs64Bit(bool setting)
 {
-	is64Bit = setting;
+	mIs64Bit = setting;
 }
 
 // Reads a pointer from this stream into an integer variable
 void GameDataStream::readPtr(qint64& ptr)
 {
-	if (!is64Bit)
+	if (!mIs64Bit)
 		*this >> (qint32&)ptr;
 	else
 		*this >> ptr;
@@ -61,7 +78,7 @@ void GameDataStream::readPtr(qint64& ptr)
 // Writes an integer value to a pointer variable
 void GameDataStream::writePtr(qint64 ptr)
 {
-	if (!is64Bit)
+	if (!mIs64Bit)
 		*this << (qint32)ptr;
 	else
 		*this << ptr;
@@ -70,7 +87,7 @@ void GameDataStream::writePtr(qint64 ptr)
 // Reads a size_t field from this stream into an integer variable
 void GameDataStream::readSize(size_t& size)
 {
-	if (!is64Bit)
+	if (!mIs64Bit)
 		*this >> (quint32&)size;
 	else
 		*this >> size;
@@ -79,7 +96,7 @@ void GameDataStream::readSize(size_t& size)
 // Writes an integer value to a size_t variable
 void GameDataStream::writeSize(size_t size)
 {
-	if (!is64Bit)
+	if (!mIs64Bit)
 		*this << (quint32)size;
 	else
 		*this << size;
@@ -161,7 +178,7 @@ void GameDataStream::close()
 // Set endianness based on platform (default is big endian)
 void GameDataStream::setDefaultEndianness()
 {
-	switch (platform)
+	switch (mPlatform)
 	{
 	case Platform::GC:
 	case Platform::X360:
@@ -179,7 +196,7 @@ void GameDataStream::setDefaultEndianness()
 // Set whether to read as 64 bit based on platform (default is false)
 void GameDataStream::setDefaultIs64Bit()
 {
-	switch (platform)
+	switch (mPlatform)
 	{
 	case Platform::PS4:
 	case Platform::NX:
